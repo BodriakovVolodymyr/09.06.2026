@@ -2,80 +2,193 @@
 
 namespace _09._06._2026
 {
+
     internal class Program
     {
         static void Main(string[] args)
         {
-            Employee employee1 = new Employee("John", new DateTime(1990, 5, 15), "1234567890", 
-                "john@example.com", "Manager", "organisation work process");
-            employee1.Print();
+            Console.WriteLine("~~~~~~~~~~~~~Task1~~~~~~~~~~~~~");
+            Website website = new Website("Example", "http://example.com", "This is an example website.", "/home");
+            Console.WriteLine(website);
+            Console.WriteLine("~~~~~~~~~~~~~Task2~~~~~~~~~~~~~");
+            Magazine magazine = new Magazine("Tech Monthly", new DateOnly(2000, 1, 1), "A magazine about technology.", "0954567890", "techmonthly@example.com");
+            Console.WriteLine(magazine);
+            Console.WriteLine("~~~~~~~~~~~~~Task3~~~~~~~~~~~~~");
+            Shop shop = new Shop("Example Shop", "123 Main St", "An example shop.", "0954567890", "shop@example.com");
+            Console.WriteLine(shop);
 
         }
+
     }
-
-
-
-
-
-
-    class Employee
+    class Website
     {
-        string name;
-        DateTime birthday;
-        string tel;
-        string mail;
-        string position;
-        string duties;
-        public Employee() { }
-        public Employee(string _name, DateTime _birthday, string _tel, string _mail, string _position, string _duties)
+        string url;
+        string path;
+
+        public Website(string name, string url, string description, string path)
         {
-            name = _name;
-            birthday = _birthday;
-            tel = _tel;
-            mail = _mail;
-            position = _position;
-            duties = _duties;
+            Name = name;
+            Url = url;
+            Description = description;
+            Path = path;
         }
 
         public string Name { get; set; }
-        public DateTime Birthday { get; set; }
-        public string Tel 
+
+        public string Url
         {
-        get { return tel; }
+            get { return url; }
+            set
+            {
+                if (value.Contains("http://") || value.Contains("https://"))
+                {
+                    url = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid URL format.");
+                }
+            }
+        }
+        public string Description { get; set; }
+        public string Path
+        {
+            get { return path; }
+            set
+            {
+                if (value.Contains("/"))
+                {
+                    path = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Path format.");
+                }
+            }
+        }
+        public override string ToString()
+        {
+            return 
+                $" Name: {Name}\n " +
+                $"URL: {Url}\n" +
+                $" Description: {Description}\n"+ 
+                $" Path: {Path}";
+        }
+    }
+    class Magazine
+    {
+        DateOnly year_of_foundation;
+        string telephone;
+        string email;
+        public Magazine(string name, DateOnly year_of_foundation, string description, string telephone, string email)
+        {
+            Name = name;
+            Year_of_foundation = year_of_foundation;
+            Description = description;
+            Telephone = telephone;
+            Email = email;
+        }
+        public string Name { get; set; }
+        public DateOnly Year_of_foundation
+        {
+            get { return year_of_foundation; }
+            set
+            {
+                if (value.Year <= DateTime.Now.Year)
+                {
+                    year_of_foundation = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Year of Foundation.");
+                }
+            }
+
+        }
+        public string Description { get; set; }
+        public string Telephone
+        {
+            get { return telephone; }
 
             set
             {
-                if (value.Length == 10)
+                if (value.Length == 10 && value.All(char.IsDigit))
                 {
-                    tel = value;
+                    telephone = value;
                 }
                 else { Console.WriteLine("Invalid phone number. It should be 10 digits."); }
             }
         }
-        public string Mail {
-            get { return mail; }
+        public string Email
+        {
+            get { return email; }
             set
             {
-                for(int i = 0; i < value.Length; i++)
+                if (value.Contains("@"))
                 {
-                    if (value[i] == '@')
-                    {
-                        mail = value;
-                        break;
-                    }
-                    else { Console.WriteLine("Invalid email address. It should contain '@'."); }
+                    email = value;
                 }
-
+                else { Console.WriteLine("Invalid email format."); }
             }
-        
         }
-        public string Position { get; set; }
-        public string Duties { get; set; }
-
-        public void Print()
+        public override string ToString()
         {
-            Console.WriteLine($"Name - {name} Year of birth - {birthday.Year} Month of birth - {birthday.Month} Tel - {tel} Mail - {mail} Position - {position} Duties - {duties}");
+            return 
+                $" Name: {Name}\n " +
+                $"Year of Foundation: {Year_of_foundation}\n" +
+                $" Description: {Description}\n"+
+                $" Telephone: {Telephone}\n" +
+                $" Email: {Email}";
         }
     }
+    class Shop
+    {
+        string telephone;
+        string email;
+        public Shop(string name, string address, string description, string telephone, string email)
+        {
+            Name = name;
+            Address = address;
+            Description = description;
+            Telephone = telephone;
+            Email = email;
+        }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string Description { get; set; }
+        public string Telephone
+        {
+            get { return telephone; }
 
+            set
+            {
+                if (value.Length == 10 && value.All(char.IsDigit))
+                {
+                    telephone = value;
+                }
+                else { Console.WriteLine("Invalid phone number. It should be 10 digits."); }
+            }
+        }
+        public string Email
+        {
+            get { return email; }
+            set
+            {
+                if (value.Contains("@"))
+                {
+                    email = value;
+                }
+                else { Console.WriteLine("Invalid email format."); }
+            }
+        }
+        public override string ToString()
+        {
+            return
+                $" Name: {Name}\n " +
+                $"Address: {Address}\n" +
+                $" Description: {Description}\n"+
+                $" Telephone: {Telephone}\n" +
+                $" Email: {Email}";
+        }
+    }
 }
